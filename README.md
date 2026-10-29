@@ -1,6 +1,6 @@
 # TradingEngine
 
-A C# trading engine project built while following a tutorial. Work in progress.
+A C# trading engine project built with .NET 10. Work in progress.
 
 Uses .NET 10, background services, dependency injection, logging, and JSON configuration.
 
