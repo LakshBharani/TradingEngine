@@ -20,14 +20,17 @@ namespace TradingEngineServer.Core
         public Task Run(CancellationToken token) => ExecuteAsync(token);
 
 
-        protected override async Task<Task> ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation($"Started {nameof(TradingEngineServer)}");
-            while (!stoppingToken.IsCancellationRequested)
+            _logger.LogInformation("Started {Server}", nameof(TradingEngineServer));
+            try
             {
+                await Task.Delay(Timeout.InfiniteTimeSpan, stoppingToken);
             }
-            _logger.LogInformation($"Stopped {nameof(TradingEngineServer)}");
-            return Task.CompletedTask;
+            catch (OperationCanceledException) when (stoppingToken.IsCancellationRequested)
+            {
+                _logger.LogInformation("Stopped {Server}", nameof(TradingEngineServer));
+            }
         }
     }
 }
