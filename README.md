@@ -11,17 +11,44 @@ dotnet run -- --self-test
 ```
 
 The demo submits two sells at the same price, then buys five units. It fills
-two units against the first order and three against the second. The checks
-cover best price, FIFO, partial fills, resting residuals, and invalid input.
+two units against the first order and three against the second. It then looks
+up and cancels the second order's remaining unit and prints an empty snapshot.
+The 11 self-test checks cover best price, FIFO, partial fills, resting residuals,
+invalid input, cancellation at the head/middle/tail of a level, empty-level
+removal, lookup consistency, and detached read-only snapshots.
 
 The matching core is single-threaded and in-memory. The original .NET host
 starts and waits for shutdown. Use the CLI flags to run the simulator.
 
+## Cancellation and inspection
+
+- `Cancel(orderId)` removes a resting order's remaining quantity and returns
+  `true`. Unknown, already cancelled, and fully filled IDs return `false`.
+  Cancellation preserves the FIFO priority of surviving orders.
+- `FindOrder(orderId)` returns an immutable value containing the active order's
+  ID, side, limit price, and remaining quantity, or `null` for an inactive ID.
+- `Snapshot()` copies all active orders into read-only bid and ask lists.
+  Bids run from highest to lowest price and asks from lowest to highest.
+  Orders within a price level retain FIFO order. Later fills, submissions, and
+  cancellations cannot change an earlier snapshot.
+
+Price levels use linked lists with an order-ID index for direct node removal.
+Fully filled and cancelled orders leave the index, and empty levels leave the
+price tree. All operations, including inspection, use the same sequential caller.
+
+## Validation
+
+```sh
+dotnet build
+dotnet run --no-build -- --self-test
+dotnet run --no-build -- --demo
+```
+
 ## Next steps
 
-1. Add cancellation, an order lookup, and book snapshots. Test cancellation of
-   an order in the middle of a price level and after a partial fill.
-2. Record submitted commands and add deterministic replay with a fixed
+Completed cancellation, active-order lookup, and book snapshots.
+
+1. Record submitted commands and add deterministic replay with a fixed
    synthetic order stream. Verify that replay produces identical fills and state.
-3. Benchmark throughput, tail latency, and allocations with documented hardware
+2. Benchmark throughput, tail latency, and allocations with documented hardware
    and workload parameters. Use the baseline to guide performance changes.
