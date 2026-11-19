@@ -1,11 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TradingEngineServer.Core;
+using System.Globalization;
+using System.Text.Json;
 
 if (args is ["--self-test"])
 {
     OrderBookChecks.Run();
     CommandReplayChecks.Run();
+    OrderBookBenchmarkChecks.Run();
     return;
 }
 
@@ -53,6 +56,25 @@ if (args.Length > 0 && args[0] is ("--record-demo" or "--replay"))
     catch (Exception error) when (error is IOException or InvalidDataException or UnauthorizedAccessException or ArgumentException or OverflowException)
     {
         Console.Error.WriteLine($"Replay error: {error.Message}");
+        Environment.ExitCode = 1;
+    }
+    return;
+}
+
+if (args.Length > 0 && args[0] == "--benchmark")
+{
+    try
+    {
+        if (args.Length > 3)
+            throw new ArgumentException("Usage: --benchmark [cycles] [trials]");
+        var cycles = args.Length > 1 ? int.Parse(args[1], CultureInfo.InvariantCulture) : 25000;
+        var trials = args.Length > 2 ? int.Parse(args[2], CultureInfo.InvariantCulture) : 5;
+        var report = OrderBookBenchmark.Run(cycles, trials);
+        Console.WriteLine(JsonSerializer.Serialize(report, new JsonSerializerOptions { WriteIndented = true }));
+    }
+    catch (Exception error) when (error is ArgumentException or FormatException or OverflowException)
+    {
+        Console.Error.WriteLine($"Benchmark error: {error.Message}");
         Environment.ExitCode = 1;
     }
     return;

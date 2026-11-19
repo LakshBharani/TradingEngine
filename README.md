@@ -76,6 +76,24 @@ reproduced.
 Five additional replay checks cover synthetic round trips, empty logs, repeated
 recordings, invalid log lines, and execution-history digests.
 
+## Reproducible matching benchmark
+
+```sh
+dotnet build -c Release
+DOTNET_TieredCompilation=0 dotnet bin/Release/net10.0/TradingEngineServer.Core.dll --benchmark 250000 7
+```
+
+The benchmark pre-generates a deterministic submit/cancel workload, warms the
+matching core, then reports JSON containing per-trial throughput, managed
+allocation, collection counts, and a separate latency distribution. Each pass
+verifies fills and final state. Optional arguments select cycles and measured
+trials, defaulting to 25,000 and five.
+
+[The published local baseline](benchmarks/README.md) documents the Apple M3 Pro
+hardware, workload, exact command, measurement boundaries, and raw results.
+Four benchmark checks cover workload/replay consistency, measurement
+invariants, nearest-rank percentiles, and rejected parameters.
+
 ## Validation
 
 ```sh
@@ -86,8 +104,6 @@ dotnet run --no-build -- --demo
 
 ## Next steps
 
-Completed cancellation, active-order lookup, book snapshots, and deterministic
-JSON Lines command replay verified against a fixed synthetic stream.
-
-1. Benchmark throughput, tail latency, and allocations with documented hardware
-   and workload parameters. Use the baseline to guide performance changes.
+The current roadmap is complete. Cancellation, active-order lookup, snapshots,
+deterministic command recording/replay, and a reproducible synthetic benchmark
+with throughput, tail latency, allocations, and documented hardware are implemented.

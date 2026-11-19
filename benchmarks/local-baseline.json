@@ -1,0 +1,89 @@
+{
+  "Workload": "bounded-fifo-match-cancel-v1",
+  "WorkloadSha256": "1c5364cb5cc75b5b2081a50d501186044c2d3adef8e4e02dfd2deb117a433c0a",
+  "Cycles": 250000,
+  "CommandsPerTrial": 2000000,
+  "WarmupPasses": 2,
+  "BuildConfiguration": "Release",
+  "Framework": ".NET 10.0.3",
+  "OperatingSystem": "macOS 27.2.1",
+  "Architecture": "Arm64",
+  "LogicalProcessors": 11,
+  "StopwatchFrequency": 1000000000,
+  "TieredCompilation": "0",
+  "AssemblyVersion": "1.0.0\u002Be6f2925b41f2711fd4b94e9ebfe88c31485d0068",
+  "ExpectedFillsPerTrial": 1000000,
+  "ExpectedFilledQuantityPerTrial": 3750000,
+  "ExpectedCancellationsPerTrial": 500000,
+  "Throughput": [
+    {
+      "ElapsedMilliseconds": 132.207166,
+      "CommandsPerSecond": 15127773.028581522,
+      "AllocatedBytes": 368000136,
+      "AllocatedBytesPerCommand": 184.000068,
+      "Gen0Collections": 44,
+      "Gen1Collections": 0,
+      "Gen2Collections": 0
+    },
+    {
+      "ElapsedMilliseconds": 134.558209,
+      "CommandsPerSecond": 14863455.859463764,
+      "AllocatedBytes": 368000136,
+      "AllocatedBytesPerCommand": 184.000068,
+      "Gen0Collections": 44,
+      "Gen1Collections": 0,
+      "Gen2Collections": 0
+    },
+    {
+      "ElapsedMilliseconds": 136.612708,
+      "CommandsPerSecond": 14639926.470090909,
+      "AllocatedBytes": 368000136,
+      "AllocatedBytesPerCommand": 184.000068,
+      "Gen0Collections": 44,
+      "Gen1Collections": 0,
+      "Gen2Collections": 0
+    },
+    {
+      "ElapsedMilliseconds": 127.83445800000001,
+      "CommandsPerSecond": 15645233.932153096,
+      "AllocatedBytes": 368000136,
+      "AllocatedBytesPerCommand": 184.000068,
+      "Gen0Collections": 44,
+      "Gen1Collections": 0,
+      "Gen2Collections": 0
+    },
+    {
+      "ElapsedMilliseconds": 127.84383399999999,
+      "CommandsPerSecond": 15644086.518869577,
+      "AllocatedBytes": 368000136,
+      "AllocatedBytesPerCommand": 184.000068,
+      "Gen0Collections": 44,
+      "Gen1Collections": 0,
+      "Gen2Collections": 0
+    },
+    {
+      "ElapsedMilliseconds": 129.052667,
+      "CommandsPerSecond": 15497548.764335105,
+      "AllocatedBytes": 368000136,
+      "AllocatedBytesPerCommand": 184.000068,
+      "Gen0Collections": 44,
+      "Gen1Collections": 0,
+      "Gen2Collections": 0
+    },
+    {
+      "ElapsedMilliseconds": 127.04104199999999,
+      "CommandsPerSecond": 15742943.922012227,
+      "AllocatedBytes": 368000136,
+      "AllocatedBytesPerCommand": 184.000068,
+      "Gen0Collections": 44,
+      "Gen1Collections": 0,
+      "Gen2Collections": 0
+    }
+  ],
+  "Latency": {
+    "P50Nanoseconds": 42,
+    "P95Nanoseconds": 84,
+    "P99Nanoseconds": 208,
+    "MaxNanoseconds": 113542
+  }
+}
